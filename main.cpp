@@ -47,6 +47,7 @@ int main() {
 		}
 	}
 
+	// inserts each word into grid
 	for (int cnt = 0; cnt < numWords; cnt++) {
 		bool inGrid = false;
 		string word = *(words + cnt);
@@ -55,6 +56,7 @@ int main() {
 			int ranCol = rand() % 25;
 			int ranOr = rand() % 8 + 1;
 			bool canFit = true;
+			// right
 			if (ranOr == 1) {
 				if (word.length() > (25 - ranCol)) {
 					canFit = false;
@@ -73,6 +75,7 @@ int main() {
 					}
 				}
 			}
+			// down
 			else if (ranOr == 2) {
 				if (word.length() > (25 - ranRow)) {
 					canFit = false;
@@ -91,6 +94,7 @@ int main() {
 					}
 				}
 			}
+			// left
 			else if (ranOr == 3) {
 				if (word.length() > (ranCol + 1)) {
 					canFit = false;
@@ -109,6 +113,7 @@ int main() {
 					}
 				}
 			}
+			// up
 			else if (ranOr == 4) {
 				if (word.length() > (ranRow + 1)) {
 					canFit = false;
@@ -127,6 +132,7 @@ int main() {
 					}
 				}
 			}
+			// down-right
 			else if (ranOr == 5) {
 				if ((word.length() > (25 - ranRow)) || (word.length() > (25 - ranCol))) {
 					canFit = false;
@@ -145,6 +151,7 @@ int main() {
 					}
 				}
 			}
+			// down-left
 			else if (ranOr == 6) {
 				if ((word.length() > (25 - ranRow)) || (word.length() > (ranCol + 1))) {
 					canFit = false;
@@ -163,6 +170,7 @@ int main() {
 					}
 				}
 			}
+			// up-right
 			else if (ranOr == 7) {
 				if ((word.length() > (ranRow + 1)) || (word.length() > (25 - ranCol))) {
 					canFit = false;
@@ -181,6 +189,7 @@ int main() {
 					}
 				}
 			}
+			// up-left
 			else if (ranOr == 8) {
 				if ((word.length() > (ranRow + 1)) || (word.length() > (ranCol + 1))) {
 					canFit = false;
@@ -202,27 +211,36 @@ int main() {
 		}
 	}
 
-
-	cout << "\n";
-
-	string atoz = "abcdefghijklmnopqrstuvwxyz";
-
+	// fills in the rest of the grid with random letters
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 25; j++) {
 			if (*((grid[i]) + j) == '?') {
-				*(grid[i] + j) = atoz[rand() % 26];
+				*(grid[i] + j) = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[rand() % 26];
 			}
 		}
 	}
 
+	cout << "\n";
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 25; j++) {
 			cout << *((grid[i]) + j);
 		}
 		cout << "\n";
 	}
-
 	cout << "\n";
+
+	// displays all words on bottom to search for
+	int wordsOnLine = 0;
+	for (int cnt = 0; cnt < numWords; cnt++) {
+		if (wordsOnLine < 5)
+			cout << *(words + cnt) << "\t";
+		else {
+			wordsOnLine = 0;
+			cout << "\n" << *(words + cnt) << "\t";
+		}
+		wordsOnLine++;
+	}
+	cout << "\n\n";
 
 	return 0;
 }
