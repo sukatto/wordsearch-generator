@@ -223,13 +223,14 @@ int main() {
 	cout << "\n";
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 25; j++) {
-			cout << *((grid[i]) + j);
+			cout << *((grid[i]) + j) << " ";
 		}
 		cout << "\n";
 	}
 	cout << "\n";
 
 	// displays all words on bottom to search for
+	cout << "KEY:\n";
 	int wordsOnLine = 0;
 	for (int cnt = 0; cnt < numWords; cnt++) {
 		if (wordsOnLine < 5)
