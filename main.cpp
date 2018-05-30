@@ -13,14 +13,14 @@ int main() {
 	cout << "\nPlease enter the number of words in the word search: ";
 	int numWords = 0;
 	cin >> numWords;
-	cin.ignore();
 	// checks to make sure input was an integer
 	while (cin.fail()) {
 		cout << "That is not an integer.  Please enter an integer for the number of words: ";
 		cin.clear();
-		cin.ignore();
+		cin.ignore(256, '\n');
 		cin >> numWords;
 	}
+	cin.ignore();
 	cout << "\n";
 
 	// pointer to array of words that stores the words entered by user
