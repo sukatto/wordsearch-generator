@@ -52,162 +52,69 @@ int main() {
 		bool inGrid = false;
 		string word = *(words + cnt);
 		while (!inGrid) {
+			// random row, column, and orientation are set
 			int ranRow = rand() % 25;	
 			int ranCol = rand() % 25;
 			int ranOr = rand() % 8 + 1;
-			bool canFit = true;
-			// right
+			// checks to see if word will fit based on orientation
+			if (ranOr == 1) {if (word.length() > (25 - ranCol)) {continue;};};
+			if (ranOr == 1) {if (word.length() > (25 - ranRow)) {continue;};};
+			if (ranOr == 1) {if (word.length() > (ranCol + 1)) {continue;};};
+			if (ranOr == 1) {if (word.length() > (ranRow + 1)) {continue;};};
+			if (ranOr == 1) {if ((word.length() > (25 - ranRow)) || (word.length() > (25 - ranCol))) {continue;};};
+			if (ranOr == 1) {if ((word.length() > (25 - ranRow)) || (word.length() > (ranCol + 1))) {continue;};};
+			if (ranOr == 1) {if ((word.length() > (ranRow + 1)) || (word.length() > (25 - ranCol))) {continue;};};
+			if (ranOr == 1) {if ((word.length() > (ranRow + 1)) || (word.length() > (ranCol + 1))) {continue;};};
+			// variables for row and column increment coefficients, which will determine how the loops that go through each letter of the word traverse the grid, are set
+			int rowInCoef = 0;
+			int colInCoef = 0;
 			if (ranOr == 1) {
-				if (word.length() > (25 - ranCol)) {
+					rowInCoef = 0;
+					colInCoef = 1;
+			};
+			if (ranOr == 2) {
+					rowInCoef = 1;
+					colInCoef = 0;
+			};
+			if (ranOr == 3) {
+					rowInCoef = 0;
+					colInCoef = -1;
+			};
+			if (ranOr == 4) {
+					rowInCoef = -1;
+					colInCoef = 0;
+			};
+			if (ranOr == 5) {
+					rowInCoef = 1;
+					colInCoef = 1;
+			};
+			if (ranOr == 6) {
+					rowInCoef = 1;
+					colInCoef = -1;
+			};
+			if (ranOr == 7) {
+					rowInCoef = -1;
+					colInCoef = 1;
+			};
+			if (ranOr == 8) {
+					rowInCoef = -1;
+					colInCoef = -1;
+			};
+			// checks to see if word can be placed based in the randomly-generated spot based on what's already on the grid; if it can't then the row, column, and orientation are re-randomized and the test for insertion repeats
+			bool canFit = true;
+			for (int k = 0; k < word.length(); k++) {
+				if ((*((grid[ranRow + (rowInCoef * k)]) + ranCol + (colInCoef * k)) != '?') && (*((grid[ranRow + (rowInCoef * k)]) + ranCol + (colInCoef * k)) != word[k])) {
 					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow]) + ranCol + k) != '?') && (*((grid[ranRow]) + ranCol + k) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow]) + ranCol + k) = word[k];
-							inGrid = true;
-						}
-					}
+					break;
 				}
 			}
-			// down
-			else if (ranOr == 2) {
-				if (word.length() > (25 - ranRow)) {
-					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow + k]) + ranCol) != '?') && (*((grid[ranRow + k]) + ranCol) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow + k]) + ranCol) = word[k];
-							inGrid = true;
-						}
-					}
-				}
+			if (!canFit) {continue;};
+			// at this point the word is confirmed to fit and not overwrite any existing letters on the grid, thus it is placed on the grid, and the main loop continues on to insert the next word, if there is one
+			for (int k = 0; k < word.length(); k++) {
+				*((grid[ranRow + (rowInCoef * k)]) + ranCol + (colInCoef * k)) = word[k];
 			}
-			// left
-			else if (ranOr == 3) {
-				if (word.length() > (ranCol + 1)) {
-					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow]) + ranCol - k) != '?') && (*((grid[ranRow]) + ranCol - k) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow]) + ranCol - k) = word[k];
-							inGrid = true;
-						}
-					}
-				}
-			}
-			// up
-			else if (ranOr == 4) {
-				if (word.length() > (ranRow + 1)) {
-					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow - k]) + ranCol) != '?') && (*((grid[ranRow - k]) + ranCol) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow - k]) + ranCol) = word[k];
-							inGrid = true;
-						}
-					}
-				}
-			}
-			// down-right
-			else if (ranOr == 5) {
-				if ((word.length() > (25 - ranRow)) || (word.length() > (25 - ranCol))) {
-					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow + k]) + ranCol + k) != '?') && (*((grid[ranRow + k]) + ranCol + k) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow + k]) + ranCol + k) = word[k];
-							inGrid = true;
-						}
-					}
-				}
-			}
-			// down-left
-			else if (ranOr == 6) {
-				if ((word.length() > (25 - ranRow)) || (word.length() > (ranCol + 1))) {
-					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow + k]) + ranCol - k) != '?') && (*((grid[ranRow + k]) + ranCol - k) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow + k]) + ranCol - k) = word[k];
-							inGrid = true;
-						}
-					}
-				}
-			}
-			// up-right
-			else if (ranOr == 7) {
-				if ((word.length() > (ranRow + 1)) || (word.length() > (25 - ranCol))) {
-					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow - k]) + ranCol + k) != '?') && (*((grid[ranRow - k]) + ranCol + k) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow - k]) + ranCol + k) = word[k];
-							inGrid = true;
-						}
-					}
-				}
-			}
-			// up-left
-			else if (ranOr == 8) {
-				if ((word.length() > (ranRow + 1)) || (word.length() > (ranCol + 1))) {
-					canFit = false;
-				}
-				if (canFit) {
-					for (int k = 0; k < word.length(); k++) {
-						if ((*((grid[ranRow - k]) + ranCol - k) != '?') && (*((grid[ranRow - k]) + ranCol - k) != word[k])) {
-							canFit = false;
-						}
-					}
-					if (canFit) {
-						for (int k = 0; k < word.length(); k++) {
-							*((grid[ranRow - k]) + ranCol - k) = word[k];
-							inGrid = true;
-						}
-					}
-				}
-			}
+			inGrid = true;
+	
 		}
 	}
 
