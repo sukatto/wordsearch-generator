@@ -33,16 +33,42 @@ int main() {
 		getline(cin, newStr);
 		*(words + cnt) = newStr;
 	}
+	cout << "\n";
+
+	// gets dimensions for grid from user
+	int dimensions = 0;
+	int dimensionReq = 0;
+	for (int cnt = 0; cnt < numWords; cnt++) {
+		if ((*(words + cnt)).length() > dimensionReq) {dimensionReq = (*(words + cnt)).length();};
+	}
+	dimensionReq += 5;
+	cout << "Please enter the dimensions for the grid (must be greater than or equal to " << dimensionReq << "): ";
+	cin >> dimensions;
+	// makes sure dimensions are less than or equal to a reasonable length and that the input is an integer
+	while (cin.fail() || dimensions < dimensionReq) {
+		if (cin.fail()) {
+			cout << "That is not an integer.  Please enter an integer greater than or equal to " << dimensionReq << " for the dimensions: ";
+			cin.clear();
+			cin.ignore(256, '\n');
+		}
+		else if (dimensions < dimensionReq) {
+			cout << "That is less than the longest word.  Please enter a size greater than or equal to " << dimensionReq << ": ";
+			cin.ignore();
+		};
+		cin >> dimensions;
+	}
+	cin.ignore();
+	cout << "\n";
 
 	// generates initial grid
-	char * grid[25];
-	for (int cnt = 0; cnt < 25; cnt++) {
-		grid[cnt] = new char[25];
+	char * grid[dimensions];
+	for (int cnt = 0; cnt < dimensions; cnt++) {
+		grid[cnt] = new char[dimensions];
 	}
 
 	// initializes grid
-	for (int i = 0; i < 25; i++) {
-		for (int j = 0; j < 25; j++) {
+	for (int i = 0; i < dimensions; i++) {
+		for (int j = 0; j < dimensions; j++) {
 			*((grid[i]) + j) = '?';
 		}
 	}
@@ -53,17 +79,17 @@ int main() {
 		string word = *(words + cnt);
 		while (!inGrid) {
 			// random row, column, and orientation are set
-			int ranRow = rand() % 25;	
-			int ranCol = rand() % 25;
+			int ranRow = rand() % dimensions;	
+			int ranCol = rand() % dimensions;
 			int ranOr = rand() % 8 + 1;
 			// checks to see if word will fit based on orientation
-			if (ranOr == 1) {if (word.length() > (25 - ranCol)) {continue;};};
-			if (ranOr == 2) {if (word.length() > (25 - ranRow)) {continue;};};
+			if (ranOr == 1) {if (word.length() > (dimensions - ranCol)) {continue;};};
+			if (ranOr == 2) {if (word.length() > (dimensions - ranRow)) {continue;};};
 			if (ranOr == 3) {if (word.length() > (ranCol + 1)) {continue;};};
 			if (ranOr == 4) {if (word.length() > (ranRow + 1)) {continue;};};
-			if (ranOr == 5) {if ((word.length() > (25 - ranRow)) || (word.length() > (25 - ranCol))) {continue;};};
-			if (ranOr == 6) {if ((word.length() > (25 - ranRow)) || (word.length() > (ranCol + 1))) {continue;};};
-			if (ranOr == 7) {if ((word.length() > (ranRow + 1)) || (word.length() > (25 - ranCol))) {continue;};};
+			if (ranOr == 5) {if ((word.length() > (dimensions - ranRow)) || (word.length() > (dimensions - ranCol))) {continue;};};
+			if (ranOr == 6) {if ((word.length() > (dimensions - ranRow)) || (word.length() > (ranCol + 1))) {continue;};};
+			if (ranOr == 7) {if ((word.length() > (ranRow + 1)) || (word.length() > (dimensions - ranCol))) {continue;};};
 			if (ranOr == 8) {if ((word.length() > (ranRow + 1)) || (word.length() > (ranCol + 1))) {continue;};};
 			// variables for row and column increment coefficients, which will determine how the loops that go through each letter of the word traverse the grid, are set
 			int rowInCoef = 0;
@@ -119,17 +145,16 @@ int main() {
 	}
 
 	// fills in the rest of the grid with random letters
-	for (int i = 0; i < 25; i++) {
-		for (int j = 0; j < 25; j++) {
+	for (int i = 0; i < dimensions; i++) {
+		for (int j = 0; j < dimensions; j++) {
 			if (*((grid[i]) + j) == '?') {
 				*(grid[i] + j) = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[rand() % 26];
 			}
 		}
 	}
 
-	cout << "\n";
-	for (int i = 0; i < 25; i++) {
-		for (int j = 0; j < 25; j++) {
+	for (int i = 0; i < dimensions; i++) {
+		for (int j = 0; j < dimensions; j++) {
 			cout << *((grid[i]) + j) << " ";
 		}
 		cout << "\n";
