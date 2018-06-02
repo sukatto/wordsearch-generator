@@ -58,13 +58,13 @@ int main() {
 			int ranOr = rand() % 8 + 1;
 			// checks to see if word will fit based on orientation
 			if (ranOr == 1) {if (word.length() > (25 - ranCol)) {continue;};};
-			if (ranOr == 1) {if (word.length() > (25 - ranRow)) {continue;};};
-			if (ranOr == 1) {if (word.length() > (ranCol + 1)) {continue;};};
-			if (ranOr == 1) {if (word.length() > (ranRow + 1)) {continue;};};
-			if (ranOr == 1) {if ((word.length() > (25 - ranRow)) || (word.length() > (25 - ranCol))) {continue;};};
-			if (ranOr == 1) {if ((word.length() > (25 - ranRow)) || (word.length() > (ranCol + 1))) {continue;};};
-			if (ranOr == 1) {if ((word.length() > (ranRow + 1)) || (word.length() > (25 - ranCol))) {continue;};};
-			if (ranOr == 1) {if ((word.length() > (ranRow + 1)) || (word.length() > (ranCol + 1))) {continue;};};
+			if (ranOr == 2) {if (word.length() > (25 - ranRow)) {continue;};};
+			if (ranOr == 3) {if (word.length() > (ranCol + 1)) {continue;};};
+			if (ranOr == 4) {if (word.length() > (ranRow + 1)) {continue;};};
+			if (ranOr == 5) {if ((word.length() > (25 - ranRow)) || (word.length() > (25 - ranCol))) {continue;};};
+			if (ranOr == 6) {if ((word.length() > (25 - ranRow)) || (word.length() > (ranCol + 1))) {continue;};};
+			if (ranOr == 7) {if ((word.length() > (ranRow + 1)) || (word.length() > (25 - ranCol))) {continue;};};
+			if (ranOr == 8) {if ((word.length() > (ranRow + 1)) || (word.length() > (ranCol + 1))) {continue;};};
 			// variables for row and column increment coefficients, which will determine how the loops that go through each letter of the word traverse the grid, are set
 			int rowInCoef = 0;
 			int colInCoef = 0;
