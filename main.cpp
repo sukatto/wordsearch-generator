@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <locale>
 
 using namespace std;
 
@@ -34,6 +35,14 @@ int main() {
 		*(words + cnt) = newStr;
 	}
 	cout << "\n";
+
+	// converts all words to uppercase
+	locale loc;
+	for (int cnt = 0; cnt < numWords; cnt++) {
+		for (int i = 0; i < (*(words + cnt)).length(); i++) {
+			(*(words + cnt))[i] = toupper((*(words + cnt))[i], loc);
+		}
+	}
 
 	// gets dimensions for grid from user
 	int dimensions = 0;
