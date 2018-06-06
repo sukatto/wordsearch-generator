@@ -1,7 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <stdlib.h>
 #include <locale>
+#include <climits>
 
 using namespace std;
 
@@ -10,15 +12,20 @@ int main() {
 	// generates seed for randomizer
 	srand(time(NULL));
 
+	cout << "\n";
+	cout << "-------------------------------------------\n";
+	cout << "| WORD SEARCH GENERATOR - BY SCOTT NORTON |\n";
+	cout << "-------------------------------------------\n\n";
+
 	// gets number of words
-	cout << "\nPlease enter the number of words in the word search: ";
+	cout << "Please enter the number of words in the word search: ";
 	int numWords = 0;
 	cin >> numWords;
 	// checks to make sure input was an integer
 	while (cin.fail()) {
 		cout << "That is not an integer.  Please enter an integer for the number of words: ";
 		cin.clear();
-		cin.ignore(256, '\n');
+		cin.ignore(INT_MAX, '\n');
 		cin >> numWords;
 	}
 	cin.ignore();
@@ -58,7 +65,7 @@ int main() {
 		if (cin.fail()) {
 			cout << "That is not an integer.  Please enter an integer greater than or equal to " << dimensionReq << " for the dimensions: ";
 			cin.clear();
-			cin.ignore(256, '\n');
+			cin.ignore(INT_MAX, '\n');
 		}
 		else if (dimensions < dimensionReq) {
 			cout << "That is less than the longest word.  Please enter a size greater than or equal to " << dimensionReq << ": ";
@@ -162,6 +169,7 @@ int main() {
 		}
 	}
 
+	cout << "-------------------------------------------\n\n";
 	for (int i = 0; i < dimensions; i++) {
 		for (int j = 0; j < dimensions; j++) {
 			cout << *((grid[i]) + j) << " ";
@@ -183,6 +191,53 @@ int main() {
 		wordsOnLine++;
 	}
 	cout << "\n\n";
+	cout << "-------------------------------------------\n\n";
+
+	// asks the user if they want to save the grid to a file
+	cout << "Would you like to save the word search to a file (y/n)? ";
+	char saveGrid = 'n';
+	cin >> saveGrid;
+	// checks to make sure input was either y or n
+	while (saveGrid != 'y' && saveGrid != 'n') {
+		cout << "That is not a valid answer.  Please enter either y for yes or n for no: ";
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cin >> saveGrid;
+	}
+	cin.ignore(INT_MAX, '\n');
+	if (saveGrid == 'y') {
+		string gridName;
+		cout << "Please enter a name for the grid: ";
+		getline(cin, gridName);
+		ofstream gridFile ("puzzles/" + gridName + ".txt");
+		for (int i = 0; i < dimensions; i++) {
+			for (int j = 0; j < dimensions; j++) {
+				gridFile << *((grid[i]) + j) << " ";
+			}
+			gridFile << "\n";
+		}
+		gridFile << "\n";
+		gridFile << "KEY:\n";
+		int wordsOnLine = 0;
+		for (int cnt = 0; cnt < numWords; cnt++) {
+			if (wordsOnLine < 5)
+				gridFile << *(words + cnt) << "\t";
+			else {
+				wordsOnLine = 0;
+				gridFile << "\n" << *(words + cnt) << "\t";
+			}
+			wordsOnLine++;
+		}
+		gridFile.close();
+		cout << "\n";
+		cout << "Grid saved to puzzles/" << gridName << ".txt.  Exiting program now...\n\n";
+			
+	};
+	if (saveGrid == 'n') {
+		cout << "\n";
+		cout << "Grid not saved.  Exiting program now...\n\n";
+	};
+	cout << "-------------------------------------------\n\n";
 
 	return 0;
 }
