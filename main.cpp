@@ -229,13 +229,11 @@ int main() {
 			wordsOnLine++;
 		}
 		gridFile.close();
-		cout << "\n";
-		cout << "Grid saved to puzzles/" << gridName << ".txt.  Exiting program now...\n\n";
+		cout << "\nGrid saved to puzzles/" << gridName << ".txt.  Exiting program now...\n\n";
 			
 	};
 	if (saveGrid == 'n') {
-		cout << "\n";
-		cout << "Grid not saved.  Exiting program now...\n\n";
+		cout << "\nGrid not saved.  Exiting program now...\n\n";
 	};
 	cout << "-------------------------------------------\n\n";
 
